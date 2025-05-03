@@ -2,10 +2,12 @@
 
 namespace App\Entity;
 use App\Repository\EmployeRepository;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use OpenApi\Attributes as OA;
 
 #[ORM\Entity(repositoryClass: EmployeRepository::class)]
+
+
 class Employe
 {
     #[ORM\Id]
