@@ -5,35 +5,39 @@ namespace App\Controller;
 use App\Entity\Employe;
 use App\Repository\EmployeRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Nelmio\ApiDocBundle\Attribute\Model;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Attribute\Route;
+use OpenApi\Attributes as OA;
 
 
 
 final class EmployeController extends AbstractController
 {
-    /**
- * @OA\Get(
- *     path="/api/employe",
- *     summary="Récupère tous les employés",
- *     tags={"Employe"},
- *     @OA\Response(
- *         response=200,
- *         description="Liste des employés récupérée avec succès",
- *         @OA\JsonContent(type="array", @OA\Items(ref="#/components/schemas/Employe"))
- *     ),
- *     @OA\Response(
- *         response=500,
- *         description="Erreur serveur",
- *         @OA\JsonContent(
- *             @OA\Property(property="status", type="string", example="error"),
- *             @OA\Property(property="message", type="string", example="Failed to retrieve data")
- *         )
- *     )
- * )
-  */
+    #[OA\Get(
+        path: '/api/employe',
+        summary: 'Récupère tous les employés',
+        tags: ['Employe'],
+        responses: [
+            new OA\Response(
+                response: 200,
+                description: 'Liste des employés récupérée avec succès',
+                content: new OA\JsonContent(type: 'array', items: new OA\Items(ref: new Model(type: \App\Entity\Employe::class)))
+            ),
+            new OA\Response(
+                response: 500,
+                description: 'Erreur serveur',
+                content: new OA\JsonContent(
+                    properties: [
+                        new OA\Property(property: 'status', type: 'string', example: 'error'),
+                        new OA\Property(property: 'message', type: 'string', example: 'Failed to retrieve data')
+                    ]
+                )
+            )
+        ]
+    )]
     #[Route('/api/employe', name: 'app_employeGet', methods: ['GET'])]
     public function getAll(EmployeRepository $employeRepository): JsonResponse
     {
@@ -47,35 +51,37 @@ final class EmployeController extends AbstractController
             ], JsonResponse::HTTP_INTERNAL_SERVER_ERROR);
         }
     }
-    /**
- * @OA\Post(
- *     path="/api/employe",
- *     summary="Crée un nouvel employé",
- *     tags={"Employe"},
- *     @OA\RequestBody(
- *         required=true,
- *         @OA\JsonContent(
- *             required={"nom", "salaire", "email"},
- *             @OA\Property(property="nom", type="string", example="John Doe"),
- *             @OA\Property(property="salaire", type="number", format="float", example=50000.00),
- *             @OA\Property(property="email", type="string", format="email", example="john.doe@example.com")
- *         )
- *     ),
- *     @OA\Response(
- *         response=201,
- *         description="Employé créé avec succès",
- *         @OA\JsonContent(ref="#/components/schemas/Employe")
- *     ),
- *     @OA\Response(
- *         response=400,
- *         description="Données invalides"
- *     ),
- *     @OA\Response(
- *         response=500,
- *         description="Erreur serveur"
- *     )
- * )
- */
+    #[OA\Post(
+        path: '/api/employe',
+        summary: 'Crée un nouvel employé',
+        tags: ['Employe'],
+        requestBody: new OA\RequestBody(
+            required: true,
+            content: new OA\JsonContent(
+                required: ['nom', 'salaire', 'email'],
+                properties: [
+                    new OA\Property(property: 'nom', type: 'string', example: 'John Doe'),
+                    new OA\Property(property: 'salaire', type: 'number', format: 'float', example: 50000.00),
+                    new OA\Property(property: 'email', type: 'string', format: 'email', example: 'john.doe@example.com')
+                ]
+            )
+        ),
+        responses: [
+            new OA\Response(
+                response: 201,
+                description: 'Employé créé avec succès',
+                content: new OA\JsonContent(ref:new Model(type: \App\Entity\Employe::class))
+            ),
+            new OA\Response(
+                response: 400,
+                description: 'Données invalides'
+            ),
+            new OA\Response(
+                response: 500,
+                description: 'Erreur serveur'
+            )
+        ]
+    )]
     #[Route('api/employe', name:'app_employePost', methods: ['POST'])]
     public function create(EntityManagerInterface $entityManager, Request $request): JsonResponse{
         try {
@@ -100,43 +106,47 @@ final class EmployeController extends AbstractController
             ], JsonResponse::HTTP_INTERNAL_SERVER_ERROR);
         }
     }
-    /**
-     * Get an employee by ID
-     * 
-     * @OA\Get(
-     *     path="/api/employe/{id}",
-     *     summary="Retrieves a specific employee by id",
-     *     tags={"Employe"},
-     *     @OA\Parameter(
-     *         name="id",
-     *         in="path",
-     *         description="ID of employee to retrieve",
-     *         required=true,
-     *         @OA\Schema(type="integer")
-     *     ),
-     *     @OA\Response(
-     *         response=200,
-     *         description="Returns the employee",
-     *         @OA\JsonContent(ref="#/components/schemas/Employe")
-     *     ),
-     *     @OA\Response(
-     *         response=404,
-     *         description="Employee not found",
-     *         @OA\JsonContent(
-     *             @OA\Property(property="status", type="string", example="error"),
-     *             @OA\Property(property="message", type="string", example="Employe not found")
-     *         )
-     *     ),
-     *     @OA\Response(
-     *         response=500,
-     *         description="Server error",
-     *         @OA\JsonContent(
-     *             @OA\Property(property="status", type="string", example="error"),
-     *             @OA\Property(property="message", type="string", example="Failed to retrieve data")
-     *         )
-     *     )
-     * )
-     */
+    #[OA\Get(
+        path: '/api/employe/{id}',
+        summary: 'Retrieves a specific employee by id',
+        tags: ['Employe'],
+        parameters: [
+            new OA\Parameter(
+                name: 'id',
+                in: 'path',
+                description: 'ID of employee to retrieve',
+                required: true,
+                schema: new OA\Schema(type: 'integer')
+            )
+        ],
+        responses: [
+            new OA\Response(
+                response: 200,
+                description: 'Returns the employee',
+                content: new OA\JsonContent(ref: new Model(type: \App\Entity\Employe::class))
+            ),
+            new OA\Response(
+                response: 404,
+                description: 'Employee not found',
+                content: new OA\JsonContent(
+                    properties: [
+                        new OA\Property(property: 'status', type: 'string', example: 'error'),
+                        new OA\Property(property: 'message', type: 'string', example: 'Employe not found')
+                    ]
+                )
+            ),
+            new OA\Response(
+                response: 500,
+                description: 'Server error',
+                content: new OA\JsonContent(
+                    properties: [
+                        new OA\Property(property: 'status', type: 'string', example: 'error'),
+                        new OA\Property(property: 'message', type: 'string', example: 'Failed to retrieve data')
+                    ]
+                )
+            )
+        ]
+    )]    
     #[Route('api/employe/{id}', name:'app_employe_get_id', methods: ['GET'])]
     public function getById(EmployeRepository $employeRepository, int $id): JsonResponse
     {
@@ -156,52 +166,58 @@ final class EmployeController extends AbstractController
             ], JsonResponse::HTTP_INTERNAL_SERVER_ERROR);
         }
     }
-    /**
-     * @OA\Patch(
-     *     path="/api/employe/{id}",
-     *     summary="Update an employee by ID",
-     *     tags={"Employe"},
-     *     @OA\Parameter(
-     *         name="id",
-     *         in="path",
-     *         description="ID of employee to update",
-     *         required=true,
-     *         @OA\Schema(type="integer")
-     *     ),
-     *     @OA\RequestBody(
-     *         required=true,
-     *         @OA\JsonContent(
-     *             required={"nom", "salaire", "email", "telephone", "poste", "adresse"},
-     *             @OA\Property(property="telephone", type="string", example="1234567890"),
-     *             @OA\Property(property="poste", type="string", example="Manager"),
-     *             @OA\Property(property="adresse", type="string", example="123 Main St"),
-     *             @OA\Property(property="email", type="string", format="email", example="test@test.com"
-     *             @OA\Property(property="nom", type="string", example="John Doe"),
-     *             @OA\Property(property="salaire", type="number", format="float", example=50000.00)
-     *         )
-     *     ),
-     *     @OA\Response(
-     *         response=200,
-     *         description="Employee updated successfully",
-     *         @OA\JsonContent(
-     *             @OA\Property(property="status", type="string", example="success"),
-     *             @OA\Property(property="message", type="string", example="Data updated successfully")
-     *         )
-     *     ),
-     *     @OA\Response(
-     *         response=404,
-     *         description="Employee not found"
-     *     ),
-     *     @OA\Response(
-     *         response=400,
-     *         description="Invalid data"
-     *     ),
-     *     @OA\Response(
-     *         response=500,
-     *         description="Server error"
-     *     )
-     * )
-     */
+    #[OA\Patch(
+        path: '/api/employe/{id}',
+        summary: 'Update an employee by ID',
+        tags: ['Employe'],
+        parameters: [
+            new OA\Parameter(
+                name: 'id',
+                in: 'path',
+                description: 'ID of employee to update',
+                required: true,
+                schema: new OA\Schema(type: 'integer')
+            )
+        ],
+        requestBody: new OA\RequestBody(
+            required: true,
+            content: new OA\JsonContent(
+                required: ['nom', 'salaire', 'email', 'telephone', 'poste', 'adresse'],
+                properties: [
+                    new OA\Property(property: 'telephone', type: 'string', example: '1234567890'),
+                    new OA\Property(property: 'poste', type: 'string', example: 'Manager'),
+                    new OA\Property(property: 'adresse', type: 'string', example: '123 Main St'),
+                    new OA\Property(property: 'email', type: 'string', format: 'email', example: 'test@test.com'),
+                    new OA\Property(property: 'nom', type: 'string', example: 'John Doe'),
+                    new OA\Property(property: 'salaire', type: 'number', format: 'float', example: 50000.00)
+                ]
+            )
+        ),
+        responses: [
+            new OA\Response(
+                response: 200,
+                description: 'Employee updated successfully',
+                content: new OA\JsonContent(
+                    properties: [
+                        new OA\Property(property: 'status', type: 'string', example: 'success'),
+                        new OA\Property(property: 'message', type: 'string', example: 'Data updated successfully')
+                    ]
+                )
+            ),
+            new OA\Response(
+                response: 404,
+                description: 'Employee not found'
+            ),
+            new OA\Response(
+                response: 400,
+                description: 'Invalid data'
+            ),
+            new OA\Response(
+                response: 500,
+                description: 'Server error'
+            )
+        ]
+    )]
     #[Route('api/employe/{id}', name:'app_employe_update', methods: ['PATCH'])]
     public function updateById(EmployeRepository $employeRepository, int $id, Request $request,EntityManagerInterface $entityManager): JsonResponse
     {
@@ -239,36 +255,40 @@ final class EmployeController extends AbstractController
             ], JsonResponse::HTTP_INTERNAL_SERVER_ERROR);
         }
     }
-    /**
-     * @OA\Delete(
-     *     path="/api/employe/{id}",
-     *     summary="Delete an employee by ID",
-     *     tags={"Employe"},
-     *     @OA\Parameter(
-     *         name="id",
-     *         in="path",
-     *         description="ID of employee to delete",
-     *         required=true,
-     *         @OA\Schema(type="integer")
-     *     ),
-     *     @OA\Response(
-     *         response=200,
-     *         description="Employee deleted successfully",
-     *         @OA\JsonContent(
-     *             @OA\Property(property="status", type="string", example="success"),
-     *             @OA\Property(property="message", type="string", example="Data deleted successfully")
-     *         )
-     *     ),
-     *     @OA\Response(
-     *         response=404,
-     *         description="Employee not found"
-     *     ),
-     *     @OA\Response(
-     *         response=500,
-     *         description="Server error"
-     *     )
-     * )
-     */
+    #[OA\Delete(
+        path: '/api/employe/{id}',
+        summary: 'Delete an employee by ID',
+        tags: ['Employe'],
+        parameters: [
+            new OA\Parameter(
+                name: 'id',
+                in: 'path',
+                description: 'ID of employee to delete',
+                required: true,
+                schema: new OA\Schema(type: 'integer')
+            )
+        ],
+        responses: [
+            new OA\Response(
+                response: 200,
+                description: 'Employee deleted successfully',
+                content: new OA\JsonContent(
+                    properties: [
+                        new OA\Property(property: 'status', type: 'string', example: 'success'),
+                        new OA\Property(property: 'message', type: 'string', example: 'Data deleted successfully')
+                    ]
+                )
+            ),
+            new OA\Response(
+                response: 404,
+                description: 'Employee not found'
+            ),
+            new OA\Response(
+                response: 500,
+                description: 'Server error'
+            )
+        ]
+    )]    
     #[Route('/api/employe/{id}', name:'app_employe_delete', methods: ['DELETE'])]
     public function deleteById(EmployeRepository $employeRepository, int $id, EntityManagerInterface $entityManager): JsonResponse
     {
