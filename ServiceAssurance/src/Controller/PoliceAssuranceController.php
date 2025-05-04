@@ -6,12 +6,14 @@ use App\Entity\PoliceAssurance;
 use Doctrine\ORM\EntityManagerInterface;
 use App\Repository\PoliceAssuranceRepository;
 use App\Repository\CompagnieRepository;
-use Nelmio\ApiDocBundle\Attribute\Model;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Attribute\Route;
 use OpenApi\Attributes as OA;
+use Symfony\Component\Messenger\Bridge\Amqp\Transport\AmqpStamp;
+use Symfony\Component\Messenger\Envelope;
+use Symfony\Component\Messenger\MessageBusInterface;
 
 final class PoliceAssuranceController extends AbstractController
 {
@@ -25,8 +27,7 @@ final class PoliceAssuranceController extends AbstractController
             content: new OA\JsonContent(
                 properties: [
                     new OA\Property(property: 'proprietaireAssurance', type: 'string', description: 'Insurance policy owner'),
-                    new OA\Property(property: 'beneficiaireAssurance', type: 'string', description: 'Insurance policy beneficiary'),
-                    new OA\Property(property: 'compagnieId', type: 'integer', description: 'ID of the insurance company')
+                    new OA\Property(property: 'beneficiaireAssurance', type: 'string', description: 'Insurance policy beneficiary')
                 ]
             )
         ),
@@ -106,8 +107,12 @@ final class PoliceAssuranceController extends AbstractController
                 response: 200,
                 description: 'List of insurance policies successfully retrieved',
                 content: new OA\JsonContent(
-                    type:'array', 
-                    items:new OA\Items(new Model(type: PoliceAssurance::class))),
+                    properties: [
+                        new OA\Property(property: 'id', type: 'integer'),
+                        new OA\Property(property: 'proprietaireAssurance', type: 'string'),
+                        new OA\Property(property: 'beneficaireAssurance', type: 'string')
+                    ]
+                )
             ),
             new OA\Response(
                 response: 500,
@@ -155,17 +160,9 @@ final class PoliceAssuranceController extends AbstractController
                 description: 'Insurance policy successfully retrieved',
                 content: new OA\JsonContent(
                     properties: [
-                        new OA\Property(property: 'status', type: 'integer', example: 200),
-                        new OA\Property(property: 'message', type: 'string', example: 'Police d\'assurance récupérée avec succès'),
-                        new OA\Property(property: 'data', type: 'object', properties: [
-                            new OA\Property(property: 'id', type: 'integer'),
-                            new OA\Property(property: 'proprietaireAssurance', type: 'string'),
-                            new OA\Property(property: 'beneficaireAssurance', type: 'string'),
-                            new OA\Property(property: 'compagnie', type: 'object', properties: [
-                                new OA\Property(property: 'id', type: 'integer'),
-                                new OA\Property(property: 'nom', type: 'string')
-                            ])
-                        ])
+                        new OA\Property(property: 'id', type: 'integer'),
+                        new OA\Property(property: 'proprietaireAssurance', type: 'string'),
+                        new OA\Property(property: 'beneficaireAssurance', type: 'string')
                     ]
                 )
             ),
@@ -237,8 +234,7 @@ final class PoliceAssuranceController extends AbstractController
             content: new OA\JsonContent(
                 properties: [
                     new OA\Property(property: 'proprietaireAssurance', type: 'string', description: 'Insurance policy owner'),
-                    new OA\Property(property: 'beneficiaireAssurance', type: 'string', description: 'Insurance policy beneficiary'),
-                    new OA\Property(property: 'compagnieId', type: 'integer', description: 'ID of the insurance company')
+                    new OA\Property(property: 'beneficiaireAssurance', type: 'string', description: 'Insurance policy beneficiary')
                 ]
             )
         ),
@@ -276,7 +272,7 @@ final class PoliceAssuranceController extends AbstractController
         ]
     )]
     #[Route('api/policeAssurance/{id}', name: 'app_police_assurance_update', methods: ['PATCH'])]    
-    public function update(EntityManagerInterface $entity_manager, CompagnieRepository $compagnie_repository,Request $request, int $id, PoliceAssuranceRepository $policeAssuranceRepository): Response
+    public function update(EntityManagerInterface $entity_manager, CompagnieRepository $compagnie_repository,Request $request, int $id, PoliceAssuranceRepository $policeAssuranceRepository,MessageBusInterface $message_bus): Response
     {
         $data = json_decode($request->getContent(), true);
         try {
@@ -287,7 +283,6 @@ final class PoliceAssuranceController extends AbstractController
                     'message' => 'Police d\'assurance not found'
                 ], Response::HTTP_NOT_FOUND);
             }
-            $policeAssurance->setProprietaireAssurance($data['proprietaireAssurance']);
             $policeAssurance->setBeneficaireAssurance($data['beneficaireAssurance']);
             $compagnie = $compagnie_repository->find($data['compagnieId']);
             if (!$compagnie) {
@@ -298,7 +293,11 @@ final class PoliceAssuranceController extends AbstractController
             }
             $policeAssurance->setCompagnie($compagnie);
             $entity_manager->flush();
-
+            $envelope = (new Envelope(
+                new \App\Message\NotificationMessage($compagnie->getEmail(), $policeAssurance->getProprietaireAssurance()."@test.com", "beneficiaire bien changer"
+                )
+            ))->with(new AmqpStamp('entreprise.employee.created'));
+            $message_bus->dispatch($envelope);
             return $this->json(
                 [
                     'status' => 200,

@@ -48,25 +48,8 @@ final class NotificationController extends AbstractController
     #[Route('/api/notification', name: 'app_notification_create', methods: ['POST'])]
     public function create(EntityManagerInterface $entity_manager,Request $request):Response{
         $data = json_decode($request->getContent(),true);
-        // try{
-        //     $notification = new Notification();
-        //     $notification->setExpediteur($data['expediteur']);
-        //     $notification->setDestinataire($data['destinataire']);
-        //     $notification->setContenu($data['contenu']);
-        //     $entity_manager->persist($notification);
-        //     $entity_manager->flush();
-        //     return $this->json([
-        //         'status'=>200,
-        //         'message'=>'Notification envoye avec succes'
-        //     ],Response::HTTP_CREATED);
-        // }
-        // catch(\Exception $e){
-        //     return $this->json([
-        //         'status'=>500,
-        //         'message'=>'Erreur lors de l\'insertion de la notification'
-        //     ],Response::HTTP_INTERNAL_SERVER_ERROR);
-        // }
-        $notification = new Notification();
+        try{
+            $notification = new Notification();
             $notification->setExpediteur($data['expediteur']);
             $notification->setDestinataire($data['destinataire']);
             $notification->setContenu($data['contenu']);
@@ -76,6 +59,14 @@ final class NotificationController extends AbstractController
                 'status'=>200,
                 'message'=>'Notification envoye avec succes'
             ],Response::HTTP_CREATED);
+        }
+        catch(\Exception $e){
+            return $this->json([
+                'status'=>500,
+                'message'=>'Erreur lors de l\'insertion de la notification'
+            ],Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
+        
     }
 
     //attribut api doc

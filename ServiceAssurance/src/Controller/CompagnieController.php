@@ -5,7 +5,6 @@ namespace App\Controller;
 use App\Entity\Compagnie;
 use Doctrine\ORM\EntityManagerInterface;
 use App\Repository\CompagnieRepository;
-use Nelmio\ApiDocBundle\Attribute\Model;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -33,9 +32,14 @@ final class CompagnieController extends AbstractController
             new OA\Response(
                 response: 201,
                 description: 'Company successfully created',
-                content: new OA\JsonContent(ref:new Model(
-                    type: Compagnie::class
-                ))
+                content: new OA\JsonContent(
+                    type: 'object',
+                    properties: [
+                        new OA\Property(property: 'nomCompagnie', type: 'string', description: 'Name of the insurance company'),
+                        new OA\Property(property: 'attribut', type: 'string', description: 'Attribute of the insurance company'),
+                        new OA\Property(property: 'email', type: 'string', format: 'email', description: 'Email of the insurance company')
+                    ]
+                )
             ),
             new OA\Response(
                 response: 500,
@@ -86,10 +90,12 @@ final class CompagnieController extends AbstractController
                 response: 200,
                 description: 'List of all companies',
                 content: new OA\JsonContent(
-                    type: 'array',
-                    items: new OA\Items(ref: new Model(
-                        type: Compagnie::class
-                    ))
+                    type: 'object',
+                    properties: [
+                        new OA\Property(property: 'nomCompagnie', type: 'string', description: 'Name of the insurance company'),
+                        new OA\Property(property: 'attribut', type: 'string', description: 'Attribute of the insurance company'),
+                        new OA\Property(property: 'email', type: 'string', format: 'email', description: 'Email of the insurance company')
+                    ]
                 )
             ),
             new OA\Response(
@@ -140,10 +146,9 @@ final class CompagnieController extends AbstractController
                 content: new OA\JsonContent(
                     type: 'object',
                     properties: [
-                        new OA\Property(property: 'status', type: 'integer', example: 200),
-                        new OA\Property(property: 'data', ref: new Model(
-                            type: Compagnie::class
-                        ))
+                        new OA\Property(property: 'nomCompagnie', type: 'string', description: 'Name of the insurance company'),
+                        new OA\Property(property: 'attribut', type: 'string', description: 'Attribute of the insurance company'),
+                        new OA\Property(property: 'email', type: 'string', format: 'email', description: 'Email of the insurance company')
                     ]
                 )
             ),

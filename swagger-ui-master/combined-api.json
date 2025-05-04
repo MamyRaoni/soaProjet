@@ -1,0 +1,1864 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "API Unifiée",
+    "version": "1.0.0",
+    "description": "Documentation unifiée de mes microservices"
+  },
+  "paths": {
+    "/api/compagnie": {
+      "get": {
+        "tags": [
+          "Compagnie"
+        ],
+        "summary": "Get all insurance companies",
+        "operationId": "get_app_compagnie_getAll",
+        "responses": {
+          "200": {
+            "description": "List of all companies",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "nomCompagnie": {
+                      "description": "Name of the insurance company",
+                      "type": "string"
+                    },
+                    "attribut": {
+                      "description": "Attribute of the insurance company",
+                      "type": "string"
+                    },
+                    "email": {
+                      "description": "Email of the insurance company",
+                      "type": "string",
+                      "format": "email"
+                    }
+                  },
+                  "type": "object"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Error while retrieving companies",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "status": {
+                      "type": "integer",
+                      "example": 500
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Erreur lors de la recuperation des compagnies"
+                    }
+                  },
+                  "type": "object"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Compagnie"
+        ],
+        "summary": "Insert a new insurance company",
+        "operationId": "post_app_compagnie_insert",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "properties": {
+                  "nomCompagnie": {
+                    "description": "Name of the insurance company",
+                    "type": "string"
+                  },
+                  "attribut": {
+                    "description": "Attribute of the insurance company",
+                    "type": "string"
+                  },
+                  "email": {
+                    "description": "Email of the insurance company",
+                    "type": "string",
+                    "format": "email"
+                  }
+                },
+                "type": "object"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Company successfully created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "nomCompagnie": {
+                      "description": "Name of the insurance company",
+                      "type": "string"
+                    },
+                    "attribut": {
+                      "description": "Attribute of the insurance company",
+                      "type": "string"
+                    },
+                    "email": {
+                      "description": "Email of the insurance company",
+                      "type": "string",
+                      "format": "email"
+                    }
+                  },
+                  "type": "object"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Error while inserting company",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "status": {
+                      "type": "integer",
+                      "example": 500
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Erreur lors de l'insertion de la compagnie"
+                    }
+                  },
+                  "type": "object"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/compagnie/{id}": {
+      "get": {
+        "tags": [
+          "Compagnie"
+        ],
+        "summary": "Get a specific insurance company",
+        "operationId": "get_app_compagnie_get",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Company found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "nomCompagnie": {
+                      "description": "Name of the insurance company",
+                      "type": "string"
+                    },
+                    "attribut": {
+                      "description": "Attribute of the insurance company",
+                      "type": "string"
+                    },
+                    "email": {
+                      "description": "Email of the insurance company",
+                      "type": "string",
+                      "format": "email"
+                    }
+                  },
+                  "type": "object"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Company not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "status": {
+                      "type": "integer",
+                      "example": 404
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Compagnie non trouvee"
+                    }
+                  },
+                  "type": "object"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Compagnie"
+        ],
+        "summary": "Delete an insurance company",
+        "operationId": "delete_app_compagnie_delete",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Company deleted successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "status": {
+                      "type": "integer",
+                      "example": 200
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Compagnie supprimee avec succes"
+                    }
+                  },
+                  "type": "object"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Company not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "status": {
+                      "type": "integer",
+                      "example": 404
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Compagnie non trouvee"
+                    }
+                  },
+                  "type": "object"
+                }
+              }
+            }
+          }
+        }
+      },
+      "patch": {
+        "tags": [
+          "Compagnie"
+        ],
+        "summary": "Update an insurance company",
+        "operationId": "patch_app_compagnie_update",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "properties": {
+                  "nomCompagnie": {
+                    "type": "string"
+                  },
+                  "attribut": {
+                    "type": "string"
+                  },
+                  "email": {
+                    "type": "string",
+                    "format": "email"
+                  }
+                },
+                "type": "object"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Company updated successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "status": {
+                      "type": "integer",
+                      "example": 200
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Compagnie modifiee avec succes"
+                    }
+                  },
+                  "type": "object"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Company not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "status": {
+                      "type": "integer",
+                      "example": 404
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Compagnie non trouvee"
+                    }
+                  },
+                  "type": "object"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/policeAssurance": {
+      "get": {
+        "tags": [
+          "Police Assurance"
+        ],
+        "summary": "Retrieves all insurance policies",
+        "description": "Gets a list of all insurance policies with their details",
+        "operationId": "get_app_police_assurance_getAll",
+        "responses": {
+          "200": {
+            "description": "List of insurance policies successfully retrieved",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "id": {
+                      "type": "integer"
+                    },
+                    "proprietaireAssurance": {
+                      "type": "string"
+                    },
+                    "beneficaireAssurance": {
+                      "type": "string"
+                    }
+                  },
+                  "type": "object"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "status": {
+                      "type": "integer",
+                      "example": 500
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Erreur lors de la récupération des polices d'assurance"
+                    }
+                  },
+                  "type": "object"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Police Assurance"
+        ],
+        "summary": "Creates a new insurance policy",
+        "description": "Creates a new insurance policy with the provided details",
+        "operationId": "post_app_police_assurance_insert",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "properties": {
+                  "proprietaireAssurance": {
+                    "description": "Insurance policy owner",
+                    "type": "string"
+                  },
+                  "beneficiaireAssurance": {
+                    "description": "Insurance policy beneficiary",
+                    "type": "string"
+                  }
+                },
+                "type": "object"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Insurance policy successfully created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "status": {
+                      "type": "integer",
+                      "example": 200
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Police d'assurance ajoutee avec succes"
+                    }
+                  },
+                  "type": "object"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Insurance company not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "status": {
+                      "type": "integer",
+                      "example": 404
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Compagnie not found"
+                    }
+                  },
+                  "type": "object"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "status": {
+                      "type": "integer",
+                      "example": 500
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Erreur lors de l'insertion de la police d'assurance"
+                    }
+                  },
+                  "type": "object"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/policeAssurance/{id}": {
+      "get": {
+        "tags": [
+          "Police Assurance"
+        ],
+        "summary": "Retrieves a specific insurance policy",
+        "description": "Gets details of an insurance policy by its ID",
+        "operationId": "get_app_police_assurance_get",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Insurance policy ID",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Insurance policy successfully retrieved",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "id": {
+                      "type": "integer"
+                    },
+                    "proprietaireAssurance": {
+                      "type": "string"
+                    },
+                    "beneficaireAssurance": {
+                      "type": "string"
+                    }
+                  },
+                  "type": "object"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Insurance policy not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "status": {
+                      "type": "integer",
+                      "example": 404
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Police d'assurance non trouvée"
+                    }
+                  },
+                  "type": "object"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "status": {
+                      "type": "integer",
+                      "example": 500
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Erreur lors de la récupération de la police d'assurance"
+                    }
+                  },
+                  "type": "object"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Police Assurance"
+        ],
+        "summary": "Deletes an insurance policy",
+        "description": "Deletes an insurance policy by its ID",
+        "operationId": "delete_app_police_assurance_delete",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Insurance policy ID",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Insurance policy successfully deleted",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "status": {
+                      "type": "integer",
+                      "example": 200
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Police d'assurance supprimee avec succes"
+                    }
+                  },
+                  "type": "object"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Insurance policy not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "status": {
+                      "type": "integer",
+                      "example": 404
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Police d'assurance not found"
+                    }
+                  },
+                  "type": "object"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "status": {
+                      "type": "integer",
+                      "example": 500
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Erreur lors de la suppression de la police d'assurance"
+                    }
+                  },
+                  "type": "object"
+                }
+              }
+            }
+          }
+        }
+      },
+      "patch": {
+        "tags": [
+          "Police Assurance"
+        ],
+        "summary": "Updates an existing insurance policy",
+        "description": "Updates an insurance policy with the provided details",
+        "operationId": "patch_app_police_assurance_update",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Insurance policy ID",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "properties": {
+                  "proprietaireAssurance": {
+                    "description": "Insurance policy owner",
+                    "type": "string"
+                  },
+                  "beneficiaireAssurance": {
+                    "description": "Insurance policy beneficiary",
+                    "type": "string"
+                  }
+                },
+                "type": "object"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Insurance policy successfully updated",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "status": {
+                      "type": "integer",
+                      "example": 200
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Police d'assurance modifiee avec succes"
+                    }
+                  },
+                  "type": "object"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Insurance policy or company not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "status": {
+                      "type": "integer",
+                      "example": 404
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Police d'assurance not found"
+                    }
+                  },
+                  "type": "object"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "status": {
+                      "type": "integer",
+                      "example": 500
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Erreur lors de la modification de la police d'assurance"
+                    }
+                  },
+                  "type": "object"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/conseillerRh": {
+      "get": {
+        "tags": [
+          "conseillerRh"
+        ],
+        "summary": "Récupère tous les employés",
+        "operationId": "get_app_conseillerGet",
+        "responses": {
+          "200": {
+            "description": "Liste des conseillerRh récupérée avec succès",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "required": [
+                      "id",
+                      "nom",
+                      "email"
+                    ],
+                    "properties": {
+                      "id": {
+                        "type": "integer"
+                      },
+                      "nom": {
+                        "type": "string"
+                      },
+                      "email": {
+                        "type": "string"
+                      }
+                    },
+                    "type": "object"
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Erreur serveur",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "error"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Failed to retrieve data"
+                    }
+                  },
+                  "type": "object"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "conseillerRh"
+        ],
+        "summary": "Crée un nouveau conseillerRh",
+        "operationId": "post_app_conseillerPost",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "required": [
+                  "nom",
+                  "email"
+                ],
+                "properties": {
+                  "nom": {
+                    "type": "string",
+                    "example": "John Doe"
+                  },
+                  "email": {
+                    "type": "string",
+                    "format": "email",
+                    "example": "john.doe@example.com"
+                  }
+                },
+                "type": "object"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "conseillerRh créé avec succès",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "required": [
+                    "id",
+                    "nom",
+                    "email"
+                  ],
+                  "properties": {
+                    "id": {
+                      "type": "integer"
+                    },
+                    "nom": {
+                      "type": "string"
+                    },
+                    "email": {
+                      "type": "string"
+                    }
+                  },
+                  "type": "object"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Données invalides"
+          },
+          "500": {
+            "description": "Erreur serveur"
+          }
+        }
+      }
+    },
+    "/api/conseillerRh{id}": {
+      "get": {
+        "tags": [
+          "conseillerRh"
+        ],
+        "summary": "Retrieves a specific conseillerRh by id",
+        "operationId": "get_app_conseiller_get_id",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "ID of conseillerRh to retrieve",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Returns the conseillerRh",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "required": [
+                    "id",
+                    "nom",
+                    "email"
+                  ],
+                  "properties": {
+                    "id": {
+                      "type": "integer"
+                    },
+                    "nom": {
+                      "type": "string"
+                    },
+                    "email": {
+                      "type": "string"
+                    }
+                  },
+                  "type": "object"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "conseillerRh not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "error"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "conseillerRh not found"
+                    }
+                  },
+                  "type": "object"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Server error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "error"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Failed to retrieve data"
+                    }
+                  },
+                  "type": "object"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "conseillerRh"
+        ],
+        "summary": "Delete an conseillerRh by ID",
+        "operationId": "delete_app_conseiller_delete",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "ID of conseillerRh to delete",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "conseillerRh deleted successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "success"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Data deleted successfully"
+                    }
+                  },
+                  "type": "object"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "conseillerRh not found"
+          },
+          "500": {
+            "description": "Server error"
+          }
+        }
+      },
+      "patch": {
+        "tags": [
+          "conseillerRh"
+        ],
+        "summary": "Update an conseillerRh by ID",
+        "operationId": "patch_app_conseiller_update",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "ID of conseillerRh to update",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "required": [
+                  "nom",
+                  "salaire",
+                  "email",
+                  "telephone",
+                  "poste",
+                  "adresse"
+                ],
+                "properties": {
+                  "email": {
+                    "type": "string",
+                    "format": "email",
+                    "example": "test@test.com"
+                  },
+                  "nom": {
+                    "type": "string",
+                    "example": "John Doe"
+                  }
+                },
+                "type": "object"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "conseillerRh updated successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "success"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Data updated successfully"
+                    }
+                  },
+                  "type": "object"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid data"
+          },
+          "404": {
+            "description": "conseillerRh not found"
+          },
+          "500": {
+            "description": "Server error"
+          }
+        }
+      }
+    },
+    "/api/employe": {
+      "get": {
+        "tags": [
+          "Employe"
+        ],
+        "summary": "Récupère tous les employés",
+        "operationId": "get_app_employeGet",
+        "responses": {
+          "200": {
+            "description": "Liste des employés récupérée avec succès",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "required": [
+                      "id",
+                      "nom",
+                      "email",
+                      "telephone",
+                      "poste",
+                      "salaire",
+                      "adresse"
+                    ],
+                    "properties": {
+                      "id": {
+                        "type": "integer"
+                      },
+                      "nom": {
+                        "type": "string"
+                      },
+                      "email": {
+                        "type": "string"
+                      },
+                      "telephone": {
+                        "type": "string"
+                      },
+                      "poste": {
+                        "type": "string"
+                      },
+                      "salaire": {
+                        "type": "integer"
+                      },
+                      "adresse": {
+                        "type": "string"
+                      }
+                    },
+                    "type": "object"
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Erreur serveur",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "error"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Failed to retrieve data"
+                    }
+                  },
+                  "type": "object"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Employe"
+        ],
+        "summary": "Crée un nouvel employé",
+        "operationId": "post_app_employePost",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "required": [
+                  "nom",
+                  "salaire",
+                  "email"
+                ],
+                "properties": {
+                  "nom": {
+                    "type": "string",
+                    "example": "John Doe"
+                  },
+                  "salaire": {
+                    "type": "number",
+                    "format": "float",
+                    "example": 50000
+                  },
+                  "email": {
+                    "type": "string",
+                    "format": "email",
+                    "example": "john.doe@example.com"
+                  }
+                },
+                "type": "object"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Employé créé avec succès",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "required": [
+                    "id",
+                    "nom",
+                    "email",
+                    "telephone",
+                    "poste",
+                    "salaire",
+                    "adresse"
+                  ],
+                  "properties": {
+                    "id": {
+                      "type": "integer"
+                    },
+                    "nom": {
+                      "type": "string"
+                    },
+                    "email": {
+                      "type": "string"
+                    },
+                    "telephone": {
+                      "type": "string"
+                    },
+                    "poste": {
+                      "type": "string"
+                    },
+                    "salaire": {
+                      "type": "integer"
+                    },
+                    "adresse": {
+                      "type": "string"
+                    }
+                  },
+                  "type": "object"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Données invalides"
+          },
+          "500": {
+            "description": "Erreur serveur"
+          }
+        }
+      }
+    },
+    "/api/employe/{id}": {
+      "get": {
+        "tags": [
+          "Employe"
+        ],
+        "summary": "Retrieves a specific employee by id",
+        "operationId": "get_app_employe_get_id",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "ID of employee to retrieve",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Returns the employee",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "required": [
+                    "id",
+                    "nom",
+                    "email",
+                    "telephone",
+                    "poste",
+                    "salaire",
+                    "adresse"
+                  ],
+                  "properties": {
+                    "id": {
+                      "type": "integer"
+                    },
+                    "nom": {
+                      "type": "string"
+                    },
+                    "email": {
+                      "type": "string"
+                    },
+                    "telephone": {
+                      "type": "string"
+                    },
+                    "poste": {
+                      "type": "string"
+                    },
+                    "salaire": {
+                      "type": "integer"
+                    },
+                    "adresse": {
+                      "type": "string"
+                    }
+                  },
+                  "type": "object"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Employee not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "error"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Employe not found"
+                    }
+                  },
+                  "type": "object"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Server error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "error"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Failed to retrieve data"
+                    }
+                  },
+                  "type": "object"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Employe"
+        ],
+        "summary": "Delete an employee by ID",
+        "operationId": "delete_app_employe_delete",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "ID of employee to delete",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Employee deleted successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "success"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Data deleted successfully"
+                    }
+                  },
+                  "type": "object"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Employee not found"
+          },
+          "500": {
+            "description": "Server error"
+          }
+        }
+      },
+      "patch": {
+        "tags": [
+          "Employe"
+        ],
+        "summary": "Update an employee by ID",
+        "operationId": "patch_app_employe_update",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "ID of employee to update",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "required": [
+                  "nom",
+                  "salaire",
+                  "email",
+                  "telephone",
+                  "poste",
+                  "adresse"
+                ],
+                "properties": {
+                  "telephone": {
+                    "type": "string",
+                    "example": "1234567890"
+                  },
+                  "poste": {
+                    "type": "string",
+                    "example": "Manager"
+                  },
+                  "adresse": {
+                    "type": "string",
+                    "example": "123 Main St"
+                  },
+                  "email": {
+                    "type": "string",
+                    "format": "email",
+                    "example": "test@test.com"
+                  },
+                  "nom": {
+                    "type": "string",
+                    "example": "John Doe"
+                  },
+                  "salaire": {
+                    "type": "number",
+                    "format": "float",
+                    "example": 50000
+                  }
+                },
+                "type": "object"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Employee updated successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "success"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Data updated successfully"
+                    }
+                  },
+                  "type": "object"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid data"
+          },
+          "404": {
+            "description": "Employee not found"
+          },
+          "500": {
+            "description": "Server error"
+          }
+        }
+      }
+    },
+    "/api/notification": {
+      "get": {
+        "tags": [
+          "notification"
+        ],
+        "summary": "Récupère tous les notification",
+        "operationId": "get_app_notification_getAll",
+        "responses": {
+          "200": {
+            "description": "Liste des notification récupérée avec succès",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "required": [
+                      "id",
+                      "expediteur",
+                      "destinataire",
+                      "contenu"
+                    ],
+                    "properties": {
+                      "id": {
+                        "type": "integer"
+                      },
+                      "expediteur": {
+                        "type": "string"
+                      },
+                      "destinataire": {
+                        "type": "string"
+                      },
+                      "contenu": {
+                        "type": "string"
+                      }
+                    },
+                    "type": "object"
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Erreur serveur",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "error"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Failed to retrieve data"
+                    }
+                  },
+                  "type": "object"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "notification"
+        ],
+        "summary": "Crée un nouvel notification",
+        "operationId": "post_app_notification_create",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "required": [
+                  "destinataire",
+                  "expediteur",
+                  "contenu"
+                ],
+                "properties": {
+                  "destinataire": {
+                    "type": "string",
+                    "format": "email",
+                    "example": "JohnDoe@email.com"
+                  },
+                  "expediteur": {
+                    "type": "string",
+                    "format": "email",
+                    "example": "JohnSow@email.com"
+                  },
+                  "contenu": {
+                    "type": "string",
+                    "example": "le contenu de la notification"
+                  }
+                },
+                "type": "object"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "notification créé avec succès",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "required": [
+                    "id",
+                    "expediteur",
+                    "destinataire",
+                    "contenu"
+                  ],
+                  "properties": {
+                    "id": {
+                      "type": "integer"
+                    },
+                    "expediteur": {
+                      "type": "string"
+                    },
+                    "destinataire": {
+                      "type": "string"
+                    },
+                    "contenu": {
+                      "type": "string"
+                    }
+                  },
+                  "type": "object"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Données invalides"
+          },
+          "500": {
+            "description": "Erreur serveur"
+          }
+        }
+      }
+    },
+    "/api/notification/{id}": {
+      "get": {
+        "tags": [
+          "notification"
+        ],
+        "summary": "Retrieves a specific notification by id",
+        "operationId": "get_app_notification_get",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "ID of notification to retrieve",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Returns the notification",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "required": [
+                    "id",
+                    "expediteur",
+                    "destinataire",
+                    "contenu"
+                  ],
+                  "properties": {
+                    "id": {
+                      "type": "integer"
+                    },
+                    "expediteur": {
+                      "type": "string"
+                    },
+                    "destinataire": {
+                      "type": "string"
+                    },
+                    "contenu": {
+                      "type": "string"
+                    }
+                  },
+                  "type": "object"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "notification not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "error"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Employe not found"
+                    }
+                  },
+                  "type": "object"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Server error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "error"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Failed to retrieve data"
+                    }
+                  },
+                  "type": "object"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "notification"
+        ],
+        "summary": "Delete an notification by ID",
+        "operationId": "delete_app_notification_delete",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "ID of notification to delete",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "notification deleted successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "success"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Data deleted successfully"
+                    }
+                  },
+                  "type": "object"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "notification not found"
+          },
+          "500": {
+            "description": "Server error"
+          }
+        }
+      },
+      "patch": {
+        "tags": [
+          "notification"
+        ],
+        "summary": "Update an notification by ID",
+        "operationId": "patch_app_notification_update",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "ID of notification to update",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "required": [
+                  "destinataire",
+                  "expediteur",
+                  "contenu"
+                ],
+                "properties": {
+                  "destinataire": {
+                    "type": "string",
+                    "format": "email",
+                    "example": "test@test.com"
+                  },
+                  "expediteur": {
+                    "type": "string",
+                    "format": "email",
+                    "example": "test@test.com"
+                  },
+                  "contenu": {
+                    "type": "string",
+                    "example": "contenu de la notification"
+                  }
+                },
+                "type": "object"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Employee updated successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "success"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Data updated successfully"
+                    }
+                  },
+                  "type": "object"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid data"
+          },
+          "404": {
+            "description": "Employee not found"
+          },
+          "500": {
+            "description": "Server error"
+          }
+        }
+      }
+    }
+  }
+}

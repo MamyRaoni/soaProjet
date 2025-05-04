@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Employe;
+use App\Repository\ConseillerRhRepository;
 use App\Repository\EmployeRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Nelmio\ApiDocBundle\Attribute\Model;
@@ -11,8 +12,9 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Attribute\Route;
 use OpenApi\Attributes as OA;
-
-
+use Symfony\Component\Messenger\Bridge\Amqp\Transport\AmqpStamp;
+use Symfony\Component\Messenger\Envelope;
+use Symfony\Component\Messenger\MessageBusInterface;
 
 final class EmployeController extends AbstractController
 {
@@ -83,7 +85,7 @@ final class EmployeController extends AbstractController
         ]
     )]
     #[Route('api/employe', name:'app_employePost', methods: ['POST'])]
-    public function create(EntityManagerInterface $entityManager, Request $request): JsonResponse{
+    public function create(EntityManagerInterface $entityManager, Request $request, MessageBusInterface $message_bus, ConseillerRhRepository $conseillerRhRepository): JsonResponse{
         try {
             $data = json_decode($request->getContent(), true);
             $employe = new Employe();
@@ -93,7 +95,13 @@ final class EmployeController extends AbstractController
             $employe->setTelephone($data['telephone']);
             $employe->setPoste($data['poste']);
             $employe->setAdresse($data['adresse']);
+            $conseiller=$conseillerRhRepository->find(1);
             $entityManager->persist($employe);
+            $envelope = (new Envelope(
+                new \App\Message\NotificationMessage($conseiller->getEmail(), "compagnieAssurance", $employe
+                )
+            ))->with(new AmqpStamp('entreprise.employee.created'));
+            $message_bus->dispatch($envelope);
             $entityManager->flush();
             return $this->json([
                 'status' => 'success',

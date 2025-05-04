@@ -24,7 +24,6 @@ class PoliceAssurance
     private ?string $beneficaireAssurance = null;
 
     #[ORM\ManyToOne(inversedBy: 'policeAssurances')]
-    #[Groups(["compagnie"])]
     private ?Compagnie $compagnie = null;
 
     public function getId(): ?int
