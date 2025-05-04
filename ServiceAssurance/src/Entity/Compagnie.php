@@ -6,6 +6,7 @@ use App\Repository\CompagnieRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Attribute\Groups;
 
 #[ORM\Entity(repositoryClass: CompagnieRepository::class)]
 class Compagnie
@@ -13,15 +14,19 @@ class Compagnie
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+    #[Groups(["police"])]
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
+    #[Groups(["police"])]
     private ?string $nomCompagnie = null;
 
     #[ORM\Column(length: 255)]
+    #[Groups(["police"])]
     private ?string $attribut = null;
 
     #[ORM\Column(length: 255)]
+    #[Groups(["police"])]
     private ?string $email = null;
 
     /**

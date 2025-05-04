@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use App\Repository\PoliceAssuranceRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Attribute\Groups;
 
 #[ORM\Entity(repositoryClass: PoliceAssuranceRepository::class)]
 class PoliceAssurance
@@ -11,15 +12,19 @@ class PoliceAssurance
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+    #[Groups(["compagnie"])]
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
+    #[Groups(["compagnie"])]
     private ?string $proprietaireAssurance = null;
 
     #[ORM\Column(length: 255)]
+    #[Groups(["compagnie"])]
     private ?string $beneficaireAssurance = null;
 
     #[ORM\ManyToOne(inversedBy: 'policeAssurances')]
+    #[Groups(["compagnie"])]
     private ?Compagnie $compagnie = null;
 
     public function getId(): ?int
